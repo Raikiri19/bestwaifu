@@ -1,21 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import CardList from './CardList';
+import { waifu } from './waifu';
+import SearchBox from './SearchBox';
 import './App.css';
 
+
+
+
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+	constructor() {
+		super()
+		this.state = {
+			waifu: waifu,
+			searchField: ''
+		}
+	}
+
+	onSearchChange = (event) => {
+		this.setState({ searchField: event.target.value });
+	}
+
+	render() {
+		const filteredWaifu = this.state.waifu.filter(waifu => {
+			return waifu.name.toLowerCase().includes(this.state.searchField.toLowerCase());
+		})
+		return (
+			<div className='tc'>
+				<h1>Best Waifu</h1>
+				<SearchBox searchChange={this.onSearchChange} />
+				<CardList waifu={filteredWaifu} />
+			</div>
+		);
+	}
 }
 
 export default App;
